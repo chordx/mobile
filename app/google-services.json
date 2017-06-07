@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "813762100299",
+    "firebase_url": "https://chordx-96b0c.firebaseio.com",
+    "project_id": "chordx-96b0c",
+    "storage_bucket": "chordx-96b0c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813762100299:android:de3355b007f408fe",
+        "android_client_info": {
+          "package_name": "me.tanjay.chordx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813762100299-n1j9evrdtj8oqjpolha5n6d3ecp7mqj0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.tanjay.chordx",
+            "certificate_hash": "f4d28563056a679f56c7f993e7ae9013d90775eb"
+          }
+        },
+        {
+          "client_id": "813762100299-k10dt5s383sa0mcsscmsq5qmoer7g523.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnnJxhJyn-Q6k8e-2eqqlv6zq3Qel_p3s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813762100299-k10dt5s383sa0mcsscmsq5qmoer7g523.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

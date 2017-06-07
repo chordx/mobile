@@ -32,7 +32,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
         first = (EditText) findViewById(R.id.first);
         last = (EditText) findViewById(R.id.last);
         email = (EditText) findViewById(R.id.email);
@@ -50,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         Log.d("daatt", response.toString());
                         try {
-                            JSONObject register = new JSONObject(response);
+                              JSONObject register = new JSONObject(response);
                             if (register.getString("status").equals("1")) {
                                 Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
