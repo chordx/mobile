@@ -38,13 +38,13 @@ public class CategoryModel {
     String categoryName;
     String categoryDescription;
 
-    public Uri getImageURI() {
+    public String getImageURI() {
         return ImageURI;
     }
 
-    public void setImageURI(Uri imageURI) {
+    public void setImageURI(String imageURI) {
         ImageURI = imageURI;
     }
 
-    Uri ImageURI;
+    String ImageURI;
 }

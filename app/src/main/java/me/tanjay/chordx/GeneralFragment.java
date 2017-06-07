@@ -1,6 +1,7 @@
 package me.tanjay.chordx;
 
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -16,6 +17,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -36,14 +39,17 @@ import me.tanjay.chordx.models.CategoryModel;
  */
 public class GeneralFragment extends Fragment {
     View view;
+    ArrayList<CategoryModel> m = new ArrayList<>();
     RecyclerView recyclerView;
+    String RequestUrl = "http://52.55.145.88:8001/chords";
+    String url = "https://s3.ap-south-1.amazonaws.com/chordx-data/";
+    String folder = "chords/";
     String[] myDataset = {"Tanusha", "Jayasinghe"};
-
+    CategoryHolder h;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
 
     }
@@ -51,183 +57,55 @@ public class GeneralFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view =  inflater.inflate(R.layout.fragment_general, container, false);
+        view = inflater.inflate(R.layout.fragment_general, container, false);
 //        grabData();
-        final ArrayList<CategoryModel> category_models = new ArrayList<>();
-//        final ArrayList<String> empN = new ArrayList<>();
-        CategoryModel cat = new CategoryModel();
-        cat.setCategoryId(1);
-        cat.setCategoryName("A");
-        cat.setCategoryDescription("Beginers Chord");
-        cat.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/a"));
-        category_models.add(cat);
 
-        CategoryModel cat1 = new CategoryModel();
-        cat1.setCategoryId(2);
-        cat1.setCategoryName("Am");
-        cat1.setCategoryDescription("Beginers Chord");
-        //cat.setImageURI();
-        cat1.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/am"));
-
-        category_models.add(cat1);
+        getData(container.getContext());
 
 
-        CategoryModel cat2 = new CategoryModel();
-        cat2.setCategoryId(2);
-        cat2.setCategoryName("C");
-        cat2.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/c"));
-        cat2.setCategoryDescription("Beginers Chord");
-        //  cat.setImageURI();
-        category_models.add(cat2);
-
-        CategoryModel cat3 = new CategoryModel();
-        cat3.setCategoryId(3);
-        cat3.setCategoryName("D");
-        cat3.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/d"));
-        cat3.setCategoryDescription("hgffghfhfhbjhjhjhjjjbjh");
-        //cat.setImageURI();
-        category_models.add(cat3);
-
-
-        CategoryModel cat4 = new CategoryModel();
-        cat4.setCategoryId(4);
-        cat4.setCategoryName("E");
-        cat4.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/e"));
-        cat4.setCategoryDescription("Beginers Chord");
-        //cat.setImageURI();
-        category_models.add(cat4);
-
-        CategoryModel cat5 = new CategoryModel();
-        cat5.setCategoryId(5);
-        cat5.setCategoryName("G");
-        cat5.setCategoryDescription("Beginers Chord");
-        cat5.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/g"));
-        //cat.setImageURI();
-        category_models.add(cat5);
-
+        h = new CategoryHolder(getContext(), m);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.cat_viewe);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new CategoryHolder(getContext(), category_models));
         return view;
     }
 
-    private void grabData(){
-        final ArrayList<CategoryModel> category_models = new ArrayList<>();
-//        final ArrayList<String> empN = new ArrayList<>();
+    private void getData(Context con) {
+        StringRequest req = new StringRequest(RequestUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject objArr = new JSONObject(response);
+                    Log.d("TAAAGgg", objArr.getJSONArray("message").toString());
+                    JSONArray arr = objArr.getJSONArray("message");
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject obj = arr.getJSONObject(i);
+                        CategoryModel model = new CategoryModel();
+                        model.setCategoryId(obj.getInt("id"));
+                        model.setImageURI(url + folder + obj.getString("chord_img"));
+                        model.setCategoryDescription(obj.getString("chord_level"));
+                        model.setCategoryName(obj.getString("chord"));
+                        m.add(model);
+                    }
+                    h.notifyDataSetChanged();
+                    recyclerView.setAdapter(h);
+                } catch (JSONException e) {
+//                    e.printStackTrace();
+                    Log.d("TAAAGGG", e.getLocalizedMessage());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
-
-//        CategoryModel cat = new CategoryModel();
-//        cat.setCategoryId(1);
-//        cat.setCategoryName("A");
-//        cat.setCategoryDescription("Beginers Chord");
-//        cat.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/a"));
-//        category_models.add(cat);
-//
-//        CategoryModel cat1 = new CategoryModel();
-//        cat1.setCategoryId(2);
-//        cat1.setCategoryName("B");
-//        cat1.setCategoryDescription("Beginers Chord");
-//        //cat.setImageURI();
-//        cat1.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/b"));
-//
-//        category_models.add(cat1);
-//
-//
-//        CategoryModel cat2 = new CategoryModel();
-//        cat2.setCategoryId(2);
-//        cat2.setCategoryName("C");
-//        cat2.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/c"));
-//        cat2.setCategoryDescription("Beginers Chord");
-//      //  cat.setImageURI();
-//        category_models.add(cat2);
-//
-//        CategoryModel cat3 = new CategoryModel();
-//        cat3.setCategoryId(3);
-//        cat3.setCategoryName("D");
-//        cat3.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/d"));
-//        cat3.setCategoryDescription("hgffghfhfhbjhjhjhjjjbjh");
-//        //cat.setImageURI();
-//        category_models.add(cat3);
-//
-//
-//        CategoryModel cat4 = new CategoryModel();
-//        cat4.setCategoryId(4);
-//        cat4.setCategoryName("E");
-//        cat4.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/e"));
-//        cat4.setCategoryDescription("Beginers Chord");
-//        //cat.setImageURI();
-//        category_models.add(cat4);
-//
-//        CategoryModel cat5 = new CategoryModel();
-//        cat5.setCategoryId(5);
-//        cat5.setCategoryName("F");
-//        cat5.setCategoryDescription("Beginers Chord");
-//        cat5.setImageURI(Uri.parse("android.resource://"+getContext().getPackageName()+"/drawable/g"));
-//        //cat.setImageURI();
-//        category_models.add(cat5);
-
-
-
-
-
-
-
-
-
-
-
-//        for (int i = 0; i < 10; i++) {
-//            CategoryModel cat = new CategoryModel();
-//            cat.setCategoryId(i);
-//            cat.setCategoryName("Tanusha" + i++);
-//            cat.setCategoryDescription("hgffghfhfhbjhjhjhjjjbjh");
-//            cat.setImageURI();
-//            category_models.add(cat);
-//        }
-//        JsonArrayRequest arr = new JsonArrayRequest(MainResource.getInstance().getEMPLOYEEURL(), new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
-//                Log.d(MainResource.TAG_DEBUG, response.toString());
-//
-//                JSONArray arr = response;
-//                for (int i = 0; i < arr.length(); i++) {
-//                    try {
-//                        JSONObject machine = arr.getJSONObject(i);
-//                        Employee_model emp = new Employee_model();
-//                        emp.setId(machine.getString("id"));
-//                        emp.setName(machine.getString("name"));
-//                        emp.setImage(machine.getString("image"));
-//                        empN.add(machine.getString("name"));
-//                        employee_models.add(emp);
-//                        Log.d(MainResource.TAG_DEBUG, employee_models.size() + "Leng");
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-
-//                    recyclerView.setAdapter(new CategoryHolder(getContext(), category_models));
-//                    Log.d(MainResource.TAG_DEBUG, Arrays.toString(empN.toArray(new String[empN.size()])));
-//                    MainResource.getInstance().setEmployees(empN.toArray(new String[empN.size()]));
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-////                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-////                        .setTitleText("Oops...")
-////                        .setContentText("No Records were found here")
-////                        .show();
-////                Log.d(MainResource.TAG_DEBUG, Log.getStackTraceString(error));
-//
-//            }
-//        });
-//
-//        RequestQueue rq = Volley.newRequestQueue(getContext());
-////        main.requestQueue = Volley.newRequestQueue(getContext());
-//        rq.add(arr);
+            }
+        });
+        RequestQueue q = Volley.newRequestQueue(getContext());
+        q.add(req);
+    }
 
 
     }
 
-}
+
